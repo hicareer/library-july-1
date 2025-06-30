@@ -12,15 +12,17 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('july_bg.png') no-repeat center center fixed; /* **JPG로 다시 한번 확인** */
+    background: url('july_bg.png') no-repeat center center fixed; /* JPG 확인 */
     background-size: cover;
     color: #333;
-    /* 이전: overflow: hidden; -> body에 overflow hidden이 있으면 전체 페이지 스크롤이 안 됩니다.
-     * 컨테이너에서 overflow hidden을 제어하고, body는 기본값으로 둡니다.
-     * 또는 명시적으로 auto로 설정하여 필요시 스크롤 가능하게 합니다.
-     * 여기서는 페이지 전환 애니메이션을 고려하여 container에서 overflow: hidden을 유지합니다.
+    /* 이전: overflow: hidden; -> 이것 때문에 스크롤이 안 되었습니다!
+     * body의 overflow를 제거하여 브라우저의 기본 스크롤 동작을 허용하거나,
+     * 여기서는 페이지 컨테이너가 90vh이므로 body 자체에 스크롤이 생길 일은 거의 없지만,
+     * 만약을 위해 명시적으로 hidden을 제거합니다.
+     * 사실상 컨테이너가 90vh이므로 body의 overflow는 크게 중요하지 않습니다.
+     * 중요한 것은 white-box-content가 스크롤 되도록 하는 것입니다.
      */
-    overflow: hidden; /* 페이지 전체 스크롤은 컨테이너가 제어하게 둡니다. */
+    overflow: hidden; /* 컨테이너가 90vh이므로 body의 스크롤은 숨겨도 무방합니다. */
 }
 
 /* 웹킷 기반 브라우저 (Chrome, Safari, Edge) 스크롤바 스타일 */
@@ -49,7 +51,7 @@ body {
     width: 100%;
     max-width: 1200px;
     height: 90vh; /* 화면 높이의 90% 사용 */
-    overflow: hidden; /* ** 페이지 전환 애니메이션을 위해 컨테이너 자체 스크롤은 숨김 (이전과 동일) ** */
+    overflow: hidden; /* ** 컨테이너 밖으로 내용이 넘치지 않도록 hidden 유지 (애니메이션 위함) ** */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.1);
@@ -62,10 +64,10 @@ body {
     width: 100%;
     height: 100%; /* 페이지는 컨테이너의 100% 높이를 차지 */
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: column; /* 세로 방향으로 요소들을 배치 */
+    justify-content: space-between; /* 상단, 하단 요소 배치 후 중간 공간 분배 */
     align-items: center;
-    padding: 40px 60px; /* 페이지 상하 패딩 */
+    padding: 40px 60px; /* 페이지 상하좌우 패딩 */
     box-sizing: border-box;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 10px;
@@ -93,7 +95,7 @@ body {
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 2px solid rgba(106, 184, 112, 0.3);
-    flex-shrink: 0; /* 헤더가 내용에 의해 줄어들지 않도록 고정 */
+    flex-shrink: 0; /* 헤더는 줄어들지 않도록 고정 */
 }
 
 .white-box-header {
@@ -101,20 +103,20 @@ body {
     padding: 15px 0;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
+    margin-bottom: 30px; /* 이 헤더 아래로 내용이 시작되므로 마진 유지 */
 }
 
 .page-content {
-    flex-grow: 1; /* 남은 공간을 최대한 차지 */
+    flex-grow: 1; /* ** 이 요소가 남은 세로 공간을 모두 차지하도록 설정 ** */
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* 콘텐츠가 위에서부터 채워지도록 */
     align-items: center;
     text-align: center;
-    padding: 20px;
+    /* padding: 20px; -> white-box-content 자체에 패딩이 있으므로 여기서는 제거하거나 최소화 */
     box-sizing: border-box;
-    min-height: 0; /* flex item이 내용에 따라 과도하게 커지는 것을 방지하여 스크롤 가능하게 함 */
+    min-height: 0; /* flex item이 내용에 따라 커지는 것을 방지하여 스크롤 가능하게 함 */
 }
 
 .white-box-content {
@@ -122,24 +124,17 @@ body {
     border-radius: 10px;
     padding: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    /* ** 가장 중요한 부분 - max-height 계산 조정 **
-     * white-box-content가 .page 내부의 남은 공간을 차지하도록 합니다.
-     * .page의 높이(100% of container)에서 헤더, 하단 버튼, 그리고 상하 패딩을 제외합니다.
-     * page 상단 패딩 (40px)
-     * page-header (대략 80px - margin-bottom 포함)
-     * white-box-header (margin-bottom 30px)
-     * page-nav-buttons (padding-top 20px + 버튼 자체 높이 약 60px)
-     * 안전하게 총 약 250px-300px 정도를 뺄 수 있습니다.
-     * 여기서는 calc(100% - ...) 대신 vh 기준으로 더 큰 값을 사용해 봅니다.
-     * 또는, flex-grow와 min-height: 0을 활용하여 부모로부터 남은 공간을 물려받게 하고,
-     * 내부 overflow: auto로 스크롤을 처리하는 것이 더 안정적일 수 있습니다.
+    /* ** 스크롤을 위한 핵심 설정 **
+     * .page-content 내에서 남은 공간을 `flex-grow: 1`로 채우고,
+     * 그 안에서 white-box-content가 최대 높이를 가지도록 합니다.
+     * 여기서는 .page-content의 100%를 사용하면서, 내부에 패딩이 있다면 그만큼 줄여줍니다.
+     * 90%나 95%로 설정하면 어떤 화면이든 스크롤이 나타날 가능성이 높아집니다.
      */
-    /* 이전: max-height: calc(100vh - 280px); */
-    max-height: calc(100% - 180px); /* ** 부모 .page의 100%에서 헤더, 푸터 공간 제외 (더 정확하게) ** */
-    overflow-y: auto; /* 내용이 길어지면 스크롤 발생 */
+    max-height: 95%; /* ** .page-content의 95% 높이로 설정하여 스크롤 유도 ** */
+    overflow-y: auto; /* ** 내용이 넘치면 스크롤바가 확실히 나타나도록 설정 ** */
     text-align: left;
-    width: 90%;
-    flex-grow: 1; /* page-content 내에서 남은 공간을 채우도록 */
+    width: 90%; /* 내부 콘텐츠 너비 */
+    flex-shrink: 1; /* 필요시 줄어들 수 있도록 허용 */
     box-sizing: border-box;
 }
 
