@@ -12,11 +12,32 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('july_bg.png') no-repeat center center fixed; /* 배경 이미지 경로 수정 */
+    background: url('july_bg.png') no-repeat center center fixed; /* 배경 이미지 경로 수정 및 고정 */
     background-size: cover;
     color: #333;
     overflow: hidden; /* 페이지 전환 시 스크롤바 방지 */
 }
+
+/* 웹킷 기반 브라우저 (Chrome, Safari) 스크롤바 스타일 */
+::-webkit-scrollbar {
+    width: 10px; /* 스크롤바 너비 */
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(240, 240, 240, 0.8); /* 스크롤바 트랙 배경 */
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cccccc; /* 스크롤바 색상 - 연한 회색 */
+    border-radius: 5px;
+    border: 2px solid rgba(240, 240, 240, 0.8); /* 트랙과 구분을 위한 테두리 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3; /* 호버 시 색상 */
+}
+
 
 .container {
     position: relative;
@@ -63,7 +84,6 @@ body {
     text-align: center;
     font-size: 1.8em; /* 헤더 폰트 크기 */
     font-weight: bold;
-    color: #4CAF50; /* 이전 색상 */
     color: #3d8042; /* 새 초록색 #6ab870 에 맞춘 진한 색 */
     margin-bottom: 20px;
     padding-bottom: 10px;
@@ -95,11 +115,12 @@ body {
     border-radius: 10px;
     padding: 30px; /* 패딩을 여유 있게 */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-height: calc(100% - 120px); /* 헤더, 버튼 공간 제외하고 최대한 사용 */
+    max-height: calc(100% - 140px); /* 헤더와 하단 버튼 영역 고려하여 조정 */
     overflow-y: auto; /* 내용이 길어지면 스크롤 */
     text-align: left; /* 내용 정렬 */
     width: 90%; /* 박스 너비 */
     flex-grow: 1; /* 스크롤 가능 영역이 충분히 커지도록 */
+    box-sizing: border-box; /* 패딩이 너비/높이에 포함되도록 */
 }
 
 .scrollable {
@@ -230,13 +251,16 @@ body {
     margin-bottom: 5px;
     flex-shrink: 0; /* 제목이 줄어들지 않도록 */
     width: 150px; /* 제목 너비 고정하여 내용과 분리 */
+    text-align: right; /* 제목을 오른쪽 정렬하여 본문과 간격 조절 */
+    padding-right: 15px; /* 제목과 본문 사이 패딩 */
+    box-sizing: border-box;
 }
 
 .casve-item p {
     font-size: 1.1em;
     line-height: 1.4;
     color: #555;
-    margin-left: 10px; /* 제목과의 간격 */
+    margin-left: 0; /* flexbox 사용 시 기본 margin 제거 */
     flex-grow: 1;
 }
 
@@ -251,7 +275,6 @@ body {
 }
 
 .accordion-header {
-    background-color: #E8F5E9; /* 연한 초록색 */
     background-color: #def2e0; /* 새 초록색 기반 연한 색 */
     color: #333;
     cursor: pointer;
@@ -358,7 +381,6 @@ body {
 
 /* Page 9 Specific Styles (Toggle Occupations) */
 .toggle-occupations-button {
-    background-color: #a5d6a7; /* 밝은 녹색 */
     background-color: #a7d9a9; /* 새 초록색 기반 밝은 색 */
     color: #333;
     padding: 15px 25px;
@@ -368,7 +390,7 @@ body {
     cursor: pointer;
     width: 100%;
     text-align: left;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* 버튼 아래 간격 유지 */
     transition: background-color 0.3s ease, transform 0.2s ease;
     font-family: 'SejongGeulggot', sans-serif;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -384,16 +406,17 @@ body {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 20px;
-    margin-top: 10px;
+    /* margin-top: 10px; 이 부분 제거 또는 0으로 설정하여 버튼에 딱 붙게 함 */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.4s ease-out;
     opacity: 0;
+    margin-bottom: 20px; /* 다음 버튼과의 간격 확보 */
 }
 
 .occupations-list.show {
-    max-height: 800px; /* 충분히 큰 값으로 설정하여 버튼이 가려지지 않도록 */
+    max-height: 800px; /* 충분히 큰 값으로 설정하여 내용이 모두 보이도록 */
     padding: 20px;
     opacity: 1;
 }
@@ -478,6 +501,8 @@ body {
     }
     .casve-item h3 {
         width: auto; /* 너비 고정 해제 */
+        text-align: left; /* 왼쪽 정렬 */
+        padding-right: 0;
         margin-bottom: 5px;
     }
     .casve-item p {
