@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('july_bg.jpg') no-repeat center center fixed; /* 여기 .jpg로 수정했습니다! */
+    background: url('july_bg.png') no-repeat center center fixed; /* 여기 .jpg로 수정했습니다! */
     background-size: cover;
     color: #333;
     overflow: hidden; /* 페이지 전환 시 스크롤바 방지 */
