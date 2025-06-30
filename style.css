@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('july_bg.png') no-repeat center center fixed;
+    background: url('july_bg.jpg') no-repeat center center fixed; /* july_bg.png에서 july_bg.jpg로 이미지 확장자 수정 */
     background-size: cover;
     color: #333;
     overflow: hidden; /* 페이지 전환 시 스크롤바 방지 */
@@ -44,7 +44,7 @@ body {
     width: 100%;
     max-width: 1200px;
     height: 90vh; /* 화면 높이의 90% 사용 */
-    overflow: hidden;
+    overflow: hidden; /* 페이지 전환 효과를 위해 컨테이너 자체 스크롤은 숨김 */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.1);
@@ -55,7 +55,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100%; /* 페이지는 컨테이너의 100% 높이를 차지 */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -108,6 +108,7 @@ body {
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
+    min-height: 0; /* flex item이 내용에 따라 커지는 것을 방지 (스크롤 관련 중요) */
 }
 
 .white-box-content {
@@ -115,10 +116,15 @@ body {
     border-radius: 10px;
     padding: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    /* 이전보다 더 넉넉하게 max-height를 설정했습니다. */
-    /* 헤더(약 80px) + 하단 버튼(약 80px) + 여백을 고려하여 90%에서 빼줍니다. */
-    max-height: calc(100% - 180px); /* 헤더, 푸터, 여백을 좀 더 넉넉히 고려 */
-    overflow-y: auto;
+    /* * max-height를 조정하여 스크롤 문제를 해결합니다.
+     * 상단 헤더와 하단 버튼의 높이를 고려하여 남은 공간을 최대한 활용합니다.
+     * 100% (페이지 전체 높이)에서 상단 헤더, 하단 버튼, 그리고 추가적인 여백을 뺍니다.
+     * 40px (page top padding) + 60px (page bottom padding) + 20px (page-nav-buttons padding-top)
+     * 대략적인 헤더, 푸터 높이를 측정하여 더 넉넉하게 calc() 값을 조정했습니다.
+     * 실제 환경에서 요소별 정확한 높이를 측정하여 이 값을 미세조정할 수 있습니다.
+     */
+    max-height: calc(100% - 200px); /* 헤더, 푸터, 여백을 훨씬 더 넉넉하게 고려 */
+    overflow-y: auto; /* 내용이 길어지면 스크롤 발생 */
     text-align: left;
     width: 90%;
     flex-grow: 1;
@@ -186,6 +192,8 @@ body {
     justify-content: space-between;
     padding-top: 20px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
+    /* 하단 버튼이 스크롤 영역을 침범하지 않도록 flex-shrink 속성을 추가 */
+    flex-shrink: 0;
 }
 
 .section-button {
@@ -299,13 +307,14 @@ body {
     padding: 0 20px;
     background-color: white;
     max-height: 0;
-    overflow: hidden;
+    overflow: hidden; /* 아코디언 내용이 넘치면 스크롤 숨김 */
     transition: max-height 0.3s ease-out, padding 0.3s ease-out;
 }
 
 .accordion-content.show {
-    max-height: 700px; /* 더 넉넉하게 설정. (내용에 따라 조절) */
+    max-height: 900px; /* CASVE 모델 사례 내용 전체가 보이도록 아주 넉넉하게 설정 */
     padding: 15px 20px;
+    overflow-y: auto; /* 아코디언 내용 자체에 스크롤 필요시 활성화 */
 }
 
 .accordion-content p {
@@ -382,6 +391,11 @@ body {
 }
 
 /* Page 9 Specific Styles (Toggle Occupations) */
+.decision-type-occupations {
+    width: 100%; /* 부모 요소의 너비를 100%로 설정 */
+    margin-bottom: 15px; /* 각 직업군 토글 사이 간격 */
+}
+
 .toggle-occupations-button {
     background-color: #a7d9a9;
     color: #333;
@@ -392,7 +406,7 @@ body {
     cursor: pointer;
     width: 100%;
     text-align: left;
-    margin-bottom: 15px; /* 버튼 아래 간격 유지 (조금 늘림) */
+    margin-bottom: 10px; /* 버튼과 펼쳐질 내용 사이의 간격 */
     transition: background-color 0.3s ease, transform 0.2s ease;
     font-family: 'SejongGeulggot', sans-serif;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -409,19 +423,20 @@ body {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    max-height: 0;
-    overflow: hidden;
+    max-height: 0; /* 초기 높이 0 */
+    overflow: hidden; /* 내용이 넘치면 숨김 */
     transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.4s ease-out;
     opacity: 0;
     margin-top: 0; /* 버튼에 딱 붙도록 마진 제거 */
-    margin-bottom: 25px; /* 목록이 펼쳐졌을 때 다음 버튼과의 간격 확보 (조금 늘림) */
+    margin-bottom: 20px; /* 목록이 펼쳐졌을 때 다음 버튼과의 간격 확보 */
 }
 
 .occupations-list.show {
-    max-height: 1000px; /* 이전보다 더 큰 값으로 설정하여 내용이 모두 보이도록 */
+    max-height: 1200px; /* 이전보다 훨씬 더 큰 값으로 설정하여 내용이 모두 보이도록 */
     padding: 20px;
     opacity: 1;
     margin-top: 15px; /* 펼쳐질 때 상단 마진 추가 (조금 늘림) */
+    overflow-y: auto; /* 직업군 목록 자체에 스크롤 필요시 활성화 */
 }
 
 .occupations-list p {
@@ -482,7 +497,7 @@ body {
     .white-box-content {
         padding: 20px;
         width: 100%;
-        max-height: calc(100% - 100px); /* 모바일에서는 헤더/버튼 공간을 다르게 계산 (더 넉넉하게) */
+        max-height: calc(100% - 150px); /* 모바일에서는 헤더/버튼 공간을 다르게 계산 (더 넉넉하게) */
     }
 
     .two-column-layout {
@@ -512,6 +527,6 @@ body {
         margin-left: 0;
     }
     .accordion-content.show, .occupations-list.show {
-        max-height: 1000px; /* 모바일에서도 충분히 보이도록 */
+        max-height: 1200px; /* 모바일에서도 충분히 보이도록 */
     }
 }
