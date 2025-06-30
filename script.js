@@ -56,19 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 아코디언 기능 (Page 5)
-    document.querySelectorAll('.accordion-header').forEach(header => {
-        header.addEventListener('click', () => {
-            const content = header.nextElementSibling;
-            // 다른 아코디언 닫기
-            document.querySelectorAll('.accordion-content.show').forEach(openContent => {
-                if (openContent !== content) {
-                    openContent.classList.remove('show');
-                }
-            });
-            content.classList.toggle('show');
-        });
-    });
+    // CASVE 모델 사례 3가지 (Page 5)의 아코디언 기능은 HTML에서 일반 div로 변경되었으므로,
+    // 관련 JavaScript 코드는 이 파일에서 제거합니다.
 
     // 직업군 토글 기능 (Page 9)
     document.querySelectorAll('.toggle-occupations-button').forEach(button => {
