@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('july_bg.jpg') no-repeat center center fixed;
+    background: url('july_bg.png') no-repeat center center fixed; /* 배경 이미지 경로 수정 */
     background-size: cover;
     color: #333;
     overflow: hidden; /* 페이지 전환 시 스크롤바 방지 */
@@ -63,10 +63,11 @@ body {
     text-align: center;
     font-size: 1.8em; /* 헤더 폰트 크기 */
     font-weight: bold;
-    color: #4CAF50; /* 초록색 계열로 변경 */
+    color: #4CAF50; /* 이전 색상 */
+    color: #3d8042; /* 새 초록색 #6ab870 에 맞춘 진한 색 */
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+    border-bottom: 2px solid rgba(106, 184, 112, 0.3); /* 새 초록색 기반 */
 }
 
 .white-box-header {
@@ -92,12 +93,13 @@ body {
 .white-box-content {
     background-color: rgba(255, 255, 255, 0.85); /* 더 불투명한 흰색 박스 */
     border-radius: 10px;
-    padding: 30px;
+    padding: 30px; /* 패딩을 여유 있게 */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-height: 70%; /* 내용이 너무 길어지지 않게 */
+    max-height: calc(100% - 120px); /* 헤더, 버튼 공간 제외하고 최대한 사용 */
     overflow-y: auto; /* 내용이 길어지면 스크롤 */
     text-align: left; /* 내용 정렬 */
     width: 90%; /* 박스 너비 */
+    flex-grow: 1; /* 스크롤 가능 영역이 충분히 커지도록 */
 }
 
 .scrollable {
@@ -111,7 +113,7 @@ body {
 .main-title {
     font-size: 3.5em; /* 제목 폰트 크기 강조 */
     font-weight: bold;
-    color: #2E8B57; /* 짙은 초록색 */
+    color: #2e8132; /* 새 초록색 #6ab870 에 맞춘 진한 색 */
     margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -125,7 +127,7 @@ body {
 .centered-title {
     font-size: 3em;
     font-weight: bold;
-    color: #2E8B57;
+    color: #2e8132; /* 새 초록색 #6ab870 에 맞춘 진한 색 */
     text-align: center;
     margin: auto; /* 중앙 정렬 */
     width: 80%; /* 너무 길지 않게 */
@@ -133,7 +135,7 @@ body {
 }
 
 .nav-button {
-    background-color: #4CAF50; /* 버튼 배경색 */
+    background-color: #6ab870; /* 버튼 배경색 - 새 초록색 */
     color: white;
     padding: 15px 30px;
     border: none;
@@ -147,7 +149,7 @@ body {
 }
 
 .nav-button:hover {
-    background-color: #45a049;
+    background-color: #5ba662; /* 호버 시 살짝 진하게 */
     transform: scale(1.05); /* 클릭 시 살짝 커지는 효과 */
 }
 
@@ -168,18 +170,18 @@ body {
     margin-bottom: 20px;
     padding: 20px 30px;
     font-size: 1.5em;
-    background-color: #66BB6A; /* 더 밝은 녹색 */
+    background-color: #7bc782; /* 더 밝은 녹색 - 새 초록색 기반 */
 }
 
 .section-button:hover {
-    background-color: #5cb85c;
+    background-color: #6ab870;
 }
 
 /* Page 3 Specific Styles */
 .person-name {
     font-size: 2em;
     font-weight: bold;
-    color: #2E8B57;
+    color: #2e8132; /* 새 초록색 기반 */
     margin-bottom: 20px;
     text-align: center;
 }
@@ -201,7 +203,7 @@ body {
 
 .info-block ul li::before {
     content: '•'; /* 사용자 정의 불릿 */
-    color: #4CAF50;
+    color: #6ab870; /* 새 초록색 */
     font-size: 1.2em;
     position: absolute;
     left: 0;
@@ -211,24 +213,31 @@ body {
 /* Page 4 Specific Styles */
 .casve-item {
     background-color: rgba(240, 255, 240, 0.9); /* 연한 녹색 배경 */
-    border-left: 5px solid #4CAF50;
+    border-left: 5px solid #6ab870; /* 새 초록색 */
     padding: 15px 20px;
     margin-bottom: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex; /* Flexbox 추가 */
+    align-items: flex-start; /* 세로 정렬 상단으로 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
 }
 
 .casve-item h3 {
-    color: #2E8B57;
+    color: #2e8132; /* 새 초록색 기반 */
     font-size: 1.4em;
     margin-top: 0;
     margin-bottom: 5px;
+    flex-shrink: 0; /* 제목이 줄어들지 않도록 */
+    width: 150px; /* 제목 너비 고정하여 내용과 분리 */
 }
 
 .casve-item p {
     font-size: 1.1em;
     line-height: 1.4;
     color: #555;
+    margin-left: 10px; /* 제목과의 간격 */
+    flex-grow: 1;
 }
 
 /* Page 5 Specific Styles (Accordion) */
@@ -243,6 +252,7 @@ body {
 
 .accordion-header {
     background-color: #E8F5E9; /* 연한 초록색 */
+    background-color: #def2e0; /* 새 초록색 기반 연한 색 */
     color: #333;
     cursor: pointer;
     padding: 15px 20px;
@@ -257,7 +267,7 @@ body {
 }
 
 .accordion-header:hover {
-    background-color: #DCEDC8; /* 더 연한 초록색 */
+    background-color: #c9e6cb; /* 더 연한 초록색 */
 }
 
 .accordion-content {
@@ -280,7 +290,7 @@ body {
 }
 
 .accordion-content strong {
-    color: #4CAF50;
+    color: #6ab870; /* 새 초록색 */
 }
 
 /* Page 7 Specific Styles (Two Column Layout) */
@@ -302,7 +312,7 @@ body {
 
 .activity-item h3 {
     font-size: 1.2em;
-    color: #4CAF50;
+    color: #6ab870; /* 새 초록색 */
     margin-top: 0;
     margin-bottom: 5px;
 }
@@ -316,7 +326,7 @@ body {
 /* Page 8 Specific Styles */
 .decision-type-item {
     background-color: rgba(240, 255, 240, 0.9);
-    border-left: 5px solid #66BB6A;
+    border-left: 5px solid #6ab870; /* 새 초록색 */
     padding: 15px 20px;
     margin-bottom: 20px;
     border-radius: 8px;
@@ -324,7 +334,7 @@ body {
 }
 
 .decision-type-item h3 {
-    color: #2E8B57;
+    color: #2e8132; /* 새 초록색 기반 */
     font-size: 1.4em;
     margin-top: 0;
     margin-bottom: 5px;
@@ -348,7 +358,8 @@ body {
 
 /* Page 9 Specific Styles (Toggle Occupations) */
 .toggle-occupations-button {
-    background-color: #A5D6A7; /* 밝은 녹색 */
+    background-color: #a5d6a7; /* 밝은 녹색 */
+    background-color: #a7d9a9; /* 새 초록색 기반 밝은 색 */
     color: #333;
     padding: 15px 25px;
     border: none;
@@ -364,7 +375,7 @@ body {
 }
 
 .toggle-occupations-button:hover {
-    background-color: #81C784; /* 살짝 진한 녹색 */
+    background-color: #88c78b; /* 살짝 진한 녹색 */
     transform: scale(1.02);
 }
 
@@ -382,7 +393,7 @@ body {
 }
 
 .occupations-list.show {
-    max-height: 600px; /* 충분히 큰 값으로 설정 */
+    max-height: 800px; /* 충분히 큰 값으로 설정하여 버튼이 가려지지 않도록 */
     padding: 20px;
     opacity: 1;
 }
@@ -408,7 +419,7 @@ body {
 }
 
 .occupations-list ul li strong {
-    color: #2E8B57;
+    color: #2e8132; /* 새 초록색 기반 */
 }
 
 /* Responsive adjustments (for very small screens, though PC version is focus) */
@@ -445,6 +456,7 @@ body {
     .white-box-content {
         padding: 20px;
         width: 100%;
+        max-height: calc(100% - 80px); /* 모바일에서는 헤더/버튼 공간을 다르게 계산 */
     }
 
     .two-column-layout {
@@ -458,5 +470,17 @@ body {
 
     .centered-title {
         font-size: 2em;
+    }
+
+    .casve-item {
+        flex-direction: column; /* 모바일에서 세로로 정렬 */
+        align-items: flex-start;
+    }
+    .casve-item h3 {
+        width: auto; /* 너비 고정 해제 */
+        margin-bottom: 5px;
+    }
+    .casve-item p {
+        margin-left: 0;
     }
 }
