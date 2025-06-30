@@ -1,25 +1,53 @@
-/* 기본 스타일 */
+@font-face {
+    font-family: 'SejongGeulggot';
+    src: url('SejongGeulggot.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     margin: 0;
-    font-family: 'SejongGeulggot', sans-serif; /* 폰트 설정 */
+    font-family: 'SejongGeulggot', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f0f0; /* 배경색 */
-    overflow: hidden; /* 페이지 전환 시 스크롤바 깜빡임 방지 */
-    background-image: url('july_bg.jpg'); /* 배경 이미지 경로 */
+    background: url('july_bg.png') no-repeat center center fixed; /* PNG가 아닌 JPG 파일명으로 다시 확인 */
     background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+    color: #333;
+    overflow: hidden; /* 페이지 전환 시 스크롤바 방지 (컨테이너 내 스크롤은 별도 처리) */
 }
 
+/* 웹킷 기반 브라우저 (Chrome, Safari, Edge) 스크롤바 스타일 */
+::-webkit-scrollbar {
+    width: 10px; /* 스크롤바 너비 */
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(240, 240, 240, 0.8); /* 스크롤바 트랙 배경 */
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cccccc; /* 스크롤바 색상 - 연한 회색 */
+    border-radius: 5px;
+    border: 2px solid rgba(240, 240, 240, 0.8); /* 트랙과 구분을 위한 테두리 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3; /* 호버 시 색상 */
+}
+
+
 .container {
-    width: 100%;
-    max-width: 800px; /* 최대 너비 설정 */
-    height: 100vh; /* 뷰포트 높이 100% 사용 */
     position: relative;
-    overflow: hidden; /* 페이지 전환 시 컨테이너 내부 스크롤바 방지 */
+    width: 100%;
+    max-width: 1200px;
+    height: 100vh; /* 화면 높이의 100% 사용 */
+    overflow: hidden; /* 페이지 전환 효과를 위해 컨테이너 자체 스크롤은 숨김 */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .page {
@@ -27,180 +55,160 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: transparent; /* 배경 이미지 보이도록 투명 */
+    height: 100%; /* 페이지는 컨테이너의 100% 높이를 차지 */
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* 요소들을 위, 중간, 아래로 분산 */
+    justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 40px 60px; /* 페이지 상하좌우 패딩 */
     box-sizing: border-box;
-    transition: transform 0.5s ease-in-out; /* 페이지 전환 애니메이션 */
+    background-color: transparent; /* 배경 이미지가 보이도록 투명 처리 */
+    border-radius: 10px;
+    opacity: 1;
+    transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+    transform: translateX(0);
 }
 
 .page.hidden {
-    transform: translateX(100%); /* 숨겨진 페이지는 오른쪽으로 이동 */
-    display: flex; /* 애니메이션을 위해 display flex 유지 */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%);
 }
 
-.page.prev {
-    transform: translateX(-100%); /* 이전 버튼 클릭 시 왼쪽으로 이동 */
+.page.hidden.prev {
+    transform: translateX(-100%);
 }
 
-/* 페이지 헤더 */
 .page-header {
     width: 100%;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8); /* 반투명 흰색 */
-    border-radius: 15px;
-    margin-bottom: 20px;
     text-align: center;
     font-size: 1.8em;
     font-weight: bold;
-    color: #333;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #3d8042;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(106, 184, 112, 0.3);
+    flex-shrink: 0; /* 헤더는 줄어들지 않도록 고정 */
 }
 
-.page-header.white-box-header {
-    background-color: #f7f7f7; /* 흰색 박스 헤더 색상 */
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+.white-box-header {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
 }
 
-/* 페이지 콘텐츠 */
 .page-content {
-    flex-grow: 1; /* 남은 공간을 채우도록 설정 */
+    flex-grow: 1; /* 남은 세로 공간을 모두 차지하도록 설정 */
     width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start; /* 콘텐츠가 위에서부터 채워지도록 */
     align-items: center;
-    justify-content: center; /* 기본적으로 콘텐츠를 중앙에 배치 */
-    padding: 0 20px; /* 좌우 패딩 */
+    text-align: center;
     box-sizing: border-box;
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
-    -ms-overflow-style: none; /* IE 및 Edge 스크롤바 숨기기 */
-    scrollbar-width: none; /* Firefox 스크롤바 숨기기 */
+    min-height: 0; /* flex item이 내용에 따라 과도하게 커지는 것을 방지 */
+    padding-bottom: 20px; /* 하단 내비 버튼과 간격 확보 */
 }
 
-.page-content::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera 스크롤바 숨기기 */
+/* white-box-content 높이 조정 */
+.white-box-content {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* 계산된 높이: 페이지 전체 높이 - (상단 패딩 + 하단 패딩 + 헤더 높이 + 하단 버튼 높이 + 기타 마진) */
+    /* 대략적인 계산: 100vh(page height) - 40px(page top padding) - 40px(page bottom padding) - 1.8em(header font-size) - 20px(header margin-bottom) - 15px(header padding) - 2px(header border) - 15px(nav button padding top) - 15px(nav button padding bottom) - 1.2em(nav button font-size) - 20px(nav button padding-top) */
+    /* 이 계산은 복잡하므로, 대략적인 값을 먼저 넣고 조절하는 것이 빠릅니다. */
+    /* 현재 헤더(약 80px), 하단 내비 버튼 영역(약 80px), 페이지 자체 패딩(상하 80px) 고려 */
+    max-height: calc(100% - 240px); /* 헤더, 푸터, 페이지 패딩 등을 고려한 값, 조절 가능 */
+    overflow-y: auto; /* 내용이 넘치면 스크롤바 나오도록 */
+    text-align: left;
+    width: 90%; /* 내부 콘텐츠 너비 */
+    flex-shrink: 1;
+    flex-grow: 1; /* Page-content 내에서 남은 공간을 채우도록 */
+    box-sizing: border-box;
+    margin-bottom: 20px; /* 각 white-box-content 간의 간격 (내부적으로) */
+}
+
+.scrollable {
+    overflow-y: auto;
 }
 
 .center-content {
-    justify-content: center; /* 내용을 중앙으로 정렬 */
-    text-align: center;
+    justify-content: center;
 }
 
 .main-title {
-    font-size: 3em;
-    color: #4CAF50; /* 진한 녹색 */
-    margin-bottom: 10px;
+    font-size: 3.5em;
+    font-weight: bold;
+    color: #2e8132;
+    margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .sub-title {
     font-size: 1.5em;
     color: #555;
+    margin-top: 0;
 }
 
-/* 페이지 내비게이션 버튼 */
+.centered-title {
+    font-size: 3em;
+    font-weight: bold;
+    color: #2e8132;
+    text-align: center;
+    margin: auto;
+    width: 80%;
+    line-height: 1.3;
+}
+
+.nav-button {
+    background-color: #6ab870;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'SejongGeulggot', sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+}
+
+.nav-button:hover {
+    background-color: #5ba662;
+    transform: scale(1.05);
+}
+
+.nav-button:active {
+    transform: scale(0.98);
+}
+
 .page-nav-buttons {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 20px 0;
-}
-
-.nav-button {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: white;
-    background-color: #8BC34A; /* 연두색 */
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.nav-button:hover {
-    background-color: #7CB342; /* 호버 시 더 진한 연두색 */
-    transform: translateY(-2px);
-}
-
-.nav-button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* 하단 버튼 영역이 스크롤 영역을 침범하지 않도록 고정 */
 }
 
 .section-button {
-    margin: 10px 0;
-    width: 80%; /* 섹션 버튼 너비 */
-    background-color: #66BB6A; /* 더 진한 연두색 */
+    width: 70%;
+    margin-bottom: 20px; /* 기존 HTML에서는 margin-bottom을 사용하지 않았으나, 여기서 추가 */
+    padding: 20px 30px;
+    font-size: 1.5em;
+    background-color: #7bc782;
 }
 
 .section-button:hover {
-    background-color: #4CAF50; /* 호버 시 더 진한 녹색 */
+    background-color: #6ab870;
 }
 
-/* 흰색 박스 스타일 */
-.white-box-content {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 25px;
-    margin-bottom: 20px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    width: 95%; /* 박스 너비 */
-    max-width: 700px; /* 최대 너비 */
-    text-align: left;
-    line-height: 1.8;
-}
-
-.white-box-content h3 {
-    color: #4CAF50;
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.4em;
-    border-bottom: 2px solid #8BC34A;
-    padding-bottom: 5px;
-}
-
-.white-box-content p {
-    color: #333;
-    font-size: 1.1em;
-    margin-bottom: 10px;
-}
-
-.white-box-content ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    color: #555;
-    font-size: 1em;
-}
-
-.white-box-content li {
-    margin-bottom: 5px;
-}
-
-.info-block ul {
-    list-style-type: none; /* 리스트 마커 제거 */
-    padding: 0;
-    margin: 0;
-}
-
-.info-block li {
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-    font-size: 1.1em;
-    color: #333;
-}
-
-.info-block li:last-child {
-    border-bottom: none;
-}
-
-/* Page 2 버튼 레이아웃 */
+/* Page 2 버튼 레이아웃: 기존 CSS에서 추가된 부분 */
 .page2-buttons-layout {
     display: flex;
     flex-direction: column;
@@ -210,178 +218,257 @@ body {
     flex-grow: 1; /* 남은 공간을 채우도록 */
 }
 
-/* Page 5 (CASVE 모델 사례) 내용 높이 조절 */
-.new-height-content {
-    max-height: calc(100% - 140px); /* 헤더, 푸터 버튼 공간 제외하고 최대한 높이 확보 */
-    /* 필요에 따라 이 값을 조절하여 스크롤 유무 결정 */
-    justify-content: flex-start; /* 콘텐츠가 위에서부터 채워지도록 */
-    padding-top: 20px; /* 상단 패딩 추가 */
-    padding-bottom: 20px; /* 하단 패딩 추가 */
-}
-
-/* CASVE 모델 단계 박스 스타일 (Page 4) */
-.casve-step-box {
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 2px solid #8BC34A; /* 테두리 색상 변경 */
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 15px; /* 박스 간 간격 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 600px;
-    text-align: left;
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* 텍스트 세로 중앙 정렬 */
-    min-height: 100px; /* 최소 높이 설정 */
+/* CASVE 모델 단계별 설명 - 이제는 단순화된 박스 */
+.casve-step-box { /* 새로운 클래스 이름 */
+    background-color: rgba(240, 255, 240, 0.9);
+    border-left: 5px solid #6ab870;
+    padding: 20px 25px; /* 내부 패딩 증가 */
+    margin-bottom: 20px; /* 각 박스 간의 여백 */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 90%; /* white-box-content와 동일한 너비 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    box-sizing: border-box;
 }
 
 .casve-step-box h3 {
-    color: #4CAF50;
+    color: #2e8132;
+    font-size: 1.4em;
     margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.5em;
+    margin-bottom: 10px; /* 제목과 내용 사이 간격 */
+    text-align: center; /* 제목 중앙 정렬 */
 }
 
 .casve-step-box p {
-    color: #333;
     font-size: 1.1em;
+    line-height: 1.5;
+    color: #555;
+    margin-bottom: 0;
+    text-align: center; /* 내용 중앙 정렬 */
+}
+
+
+/* Page 3 Specific Styles (Info Blocks - ul, li) */
+/* 이 부분은 CASVE 모델 페이지에 안 쓰일테니, 다른 페이지에 ul,li 디자인이 필요하다면 유지 */
+.info-block ul {
+    list-style: none;
+    padding: 0;
     margin: 0;
 }
 
+.info-block ul li {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    padding-left: 20px;
+    position: relative;
+    color: #444;
+}
 
-/* 진로 의사결정 유형 (Page 8) */
-.decision-type-item {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 25px;
-    margin-bottom: 20px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    width: 95%;
-    max-width: 700px;
+.info-block ul li::before {
+    content: '•';
+    color: #6ab870;
+    font-size: 1.2em;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* Page 7 Specific Styles (Two Column Layout) */
+.two-column-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
     text-align: left;
-    line-height: 1.8;
+    align-items: start;
+    width: 90%; /* white-box-content와 동일하게 조정 */
+    max-width: 700px; /* white-box-content와 동일하게 조정 */
+}
+
+.activity-item {
+    background-color: rgba(245, 250, 245, 0.9);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e0e0e0;
+}
+
+.activity-item h3 {
+    font-size: 1.2em;
+    color: #6ab870;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.activity-item p {
+    font-size: 0.95em;
+    color: #666;
+    margin-bottom: 0;
+}
+
+/* Page 8 Specific Styles */
+.decision-type-item {
+    background-color: rgba(240, 255, 240, 0.9);
+    border-left: 5px solid #6ab870;
+    padding: 15px 20px;
+    margin-bottom: 20px; /* 항목 간 충분한 간격 */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 90%; /* white-box-content와 동일하게 조정 */
+    max-width: 700px; /* white-box-content와 동일하게 조정 */
 }
 
 .decision-type-item h3 {
-    color: #4CAF50;
-    margin-top: 0;
-    margin-bottom: 15px;
+    color: #2e8132;
     font-size: 1.4em;
-    border-bottom: 2px solid #8BC34A;
-    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 5px;
 }
 
 .decision-type-item p {
-    color: #333;
     font-size: 1.1em;
+    line-height: 1.4;
+    color: #555;
     margin-bottom: 10px;
 }
 
 .highlight-text {
-    font-weight: bold;
-    color: #7CB342; /* 녹색 강조 */
-    font-size: 1em;
+    font-style: italic;
+    color: #777;
+    font-size: 0.95em;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+    padding-top: 8px;
+    margin-top: 10px;
 }
 
-/* Page 7 (자녀의 CASVE 연습 활동) 2단 레이아웃 */
-.two-column-layout {
-    display: grid;
-    grid-template-columns: 1fr; /* 기본적으로 1단 */
-    gap: 20px;
-    width: 95%;
-    max-width: 700px;
-    justify-content: center;
-    align-items: start; /* 위에서부터 정렬 */
-}
-
-@media (min-width: 600px) { /* 화면이 넓어지면 2단으로 */
-    .two-column-layout {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.activity-item {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: left;
-}
-
-.activity-item h3 {
-    color: #4CAF50;
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.3em;
-}
-
-.activity-item p {
-    color: #333;
-    font-size: 1em;
-    margin: 0;
-}
-
-/* 직업군 토글 섹션 (Page 9) */
+/* Page 9 Specific Styles (Toggle Occupations) */
 .decision-type-occupations {
-    width: 95%;
-    max-width: 700px;
-    margin-bottom: 20px; /* 섹션 간 간격 */
+    width: 90%; /* white-box-content와 동일하게 조정 */
+    max-width: 700px; /* white-box-content와 동일하게 조정 */
+    margin-bottom: 15px;
 }
 
 .toggle-occupations-button {
-    background-color: #66BB6A; /* 섹션 버튼과 유사한 색상 */
-    color: white;
+    background-color: #a7d9a9;
+    color: #333;
     padding: 15px 25px;
     border: none;
-    border-radius: 10px; /* 약간 둥근 모서리 */
+    border-radius: 8px;
+    font-size: 1.3em;
+    cursor: pointer;
     width: 100%;
     text-align: left;
-    font-size: 1.2em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 5px; /* 리스트와 버튼 사이 간격 */
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'SejongGeulggot', sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .toggle-occupations-button:hover {
-    background-color: #4CAF50;
+    background-color: #88c78b;
+    transform: scale(1.02);
 }
 
 .occupations-list {
     background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
-    text-align: left;
-    line-height: 1.6;
-    max-height: 0; /* 초기에는 숨김 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease-out, padding 0.5s ease-out, margin-top 0.5s ease-out;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.4s ease-out;
+    opacity: 0;
+    margin-top: 0;
+    margin-bottom: 20px;
 }
 
 .occupations-list.show {
-    max-height: 500px; /* 콘텐츠 길이에 따라 조절 */
-    /* padding과 margin-top은 이미 transition에 포함됨 */
-    margin-top: 15px; /* 펼쳐졌을 때 위쪽 간격 */
+    max-height: 2000px; /* 충분히 큰 값으로 설정하여 내용 전체가 보이도록 */
+    padding: 20px;
+    opacity: 1;
+    margin-top: 15px;
+    overflow-y: auto; /* 내용이 길면 스크롤바가 생기도록 */
 }
 
 .occupations-list p {
-    color: #333;
     font-size: 1.1em;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    color: #444;
 }
 
 .occupations-list ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    color: #555;
-    font-size: 1em;
+    list-style: disc;
+    padding-left: 25px;
+    margin-top: 15px;
 }
 
-.occupations-list li {
-    margin-bottom: 5px;
+.occupations-list ul li {
+    font-size: 1em;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    color: #555;
+}
+
+.occupations-list ul li strong {
+    color: #2e8132;
+}
+
+/* Responsive adjustments (for very small screens, though PC version is focus) */
+@media (max-width: 768px) {
+    .container {
+        height: 100vh;
+        width: 100vw;
+        border-radius: 0;
+    }
+
+    .page {
+        padding: 20px;
+    }
+
+    .main-title {
+        font-size: 2.5em;
+    }
+
+    .sub-title {
+        font-size: 1.2em;
+    }
+
+    .nav-button {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+
+    .section-button {
+        width: 90%;
+        font-size: 1.3em;
+        padding: 15px 20px;
+    }
+
+    .white-box-content {
+        padding: 20px;
+        width: 100%;
+        max-height: calc(100vh - 180px); /* 모바일 환경에서도 헤더, 푸터, 패딩을 고려 */
+    }
+
+    .two-column-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* .accordion-header, 이 부분은 script.js와 함께 제거되었으므로 제거*/
+    .toggle-occupations-button {
+        font-size: 1.1em;
+        padding: 12px 15px;
+    }
+
+    .centered-title {
+        font-size: 2em;
+    }
+
+    /* CASVE 모델 단계별 설명 및 사례 박스 모바일 조정 */
+    .casve-step-box {
+        padding: 15px 20px;
+        width: 100%;
+    }
 }
