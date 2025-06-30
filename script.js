@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 페이지 이동 함수
     const goToPage = (targetId, direction) => {
-        const currentPage = pages[currentPageIndex];
+        const currentPage = document.querySelector('.page:not(.hidden)'); // 현재 보이는 페이지
         const targetPage = document.getElementById(targetId);
 
         if (!targetPage) {
@@ -12,21 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Determine the animation direction
-        if (direction === 'next') {
-            currentPage.classList.add('hidden'); // Current page slides out to right
-            currentPage.classList.remove('prev'); // Ensure no prev class
-        } else if (direction === 'prev') {
-            currentPage.classList.add('hidden');
-            currentPage.classList.add('prev'); // Current page slides out to left
-        } else { // Direct jump (e.g., from page 2 buttons)
-            pages.forEach(page => page.classList.add('hidden'));
+        // 모든 페이지 숨기기 (초기화)
+        pages.forEach(page => {
+            page.classList.add('hidden');
+            page.classList.remove('prev'); // 이전 전환 효과 초기화
+        });
+
+        // 애니메이션 방향 설정
+        if (currentPage && direction) {
+            if (direction === 'next') {
+                // 다음 페이지로 넘어갈 때, 현재 페이지는 왼쪽으로 슬라이드 아웃 효과를 위해
+                // 클래스를 잠시 유지한 후, 바로 hidden 처리
+                // 사실상 이 로직에서는 'next'일 때 prev 클래스를 사용하지 않으므로 큰 의미 없음
+            } else if (direction === 'prev') {
+                targetPage.classList.add('prev'); // 이전 페이지로 갈 때, 도착할 페이지가 왼쪽에서 들어오도록
+            }
         }
+        
+        targetPage.classList.remove('hidden'); // 목표 페이지 보이게 하기
 
-        targetPage.classList.remove('hidden');
-        targetPage.classList.remove('prev'); // Ensure target page is not marked for prev transition
-
-        // Update current page index
+        // 현재 페이지 인덱스 업데이트
         pages.forEach((page, index) => {
             if (page.id === targetId) {
                 currentPageIndex = index;
@@ -45,7 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (event.target.classList.contains('prev-button')) {
                 direction = 'prev';
             }
-
+            // Page 2의 섹션 버튼들은 'next', 'prev'가 없으므로 direction은 null이 됨 (바로 이동)
+            
             goToPage(targetId, direction);
         });
     });
@@ -83,5 +89,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 초기 페이지 설정
-    goToPage('page1', null);
+    goToPage('page1', null); // 처음 로드될 때는 애니메이션 없이 바로 page1 표시
 });
