@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('july_bg.jpg') no-repeat center center fixed; /* july_bg.png에서 july_bg.jpg로 이미지 확장자 수정 */
+    background: url('july_bg.jpg') no-repeat center center fixed; /* 여기 .jpg로 수정했습니다! */
     background-size: cover;
     color: #333;
     overflow: hidden; /* 페이지 전환 시 스크롤바 방지 */
@@ -116,14 +116,16 @@ body {
     border-radius: 10px;
     padding: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    /* * max-height를 조정하여 스크롤 문제를 해결합니다.
-     * 상단 헤더와 하단 버튼의 높이를 고려하여 남은 공간을 최대한 활용합니다.
-     * 100% (페이지 전체 높이)에서 상단 헤더, 하단 버튼, 그리고 추가적인 여백을 뺍니다.
-     * 40px (page top padding) + 60px (page bottom padding) + 20px (page-nav-buttons padding-top)
-     * 대략적인 헤더, 푸터 높이를 측정하여 더 넉넉하게 calc() 값을 조정했습니다.
-     * 실제 환경에서 요소별 정확한 높이를 측정하여 이 값을 미세조정할 수 있습니다.
+    /* ** 가장 중요한 부분 **
+     * white-box-content의 max-height를 매우 크게 설정하여 대부분의 경우 스크롤바가 콘텐츠 높이에 따라 나타나도록 합니다.
+     * calc(100vh - [헤더 높이] - [하단 버튼 높이] - [페이지 패딩] - [추가 여백]) 형태로 계산
+     * 현재 페이지 패딩: 상하 40px + 60px = 100px
+     * 페이지 헤더: 약 80px (white-box-header 포함)
+     * 페이지 하단 버튼 영역: 약 80px
+     * 총 100 + 80 + 80 = 260px 정도를 빼면 안전하지만, 여유를 두어 280px을 뺍니다.
+     * 이 값을 실제 브라우저 개발자 도구로 요소 높이를 측정하면서 조절해보는 것이 가장 정확합니다.
      */
-    max-height: calc(100% - 200px); /* 헤더, 푸터, 여백을 훨씬 더 넉넉하게 고려 */
+    max-height: calc(100vh - 280px); /* 화면 전체 높이(vh)에서 헤더, 푸터, 여백을 최대로 고려 */
     overflow-y: auto; /* 내용이 길어지면 스크롤 발생 */
     text-align: left;
     width: 90%;
@@ -280,7 +282,7 @@ body {
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden; /* 아코디언 내용이 튀어나오지 않도록 */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
@@ -307,14 +309,14 @@ body {
     padding: 0 20px;
     background-color: white;
     max-height: 0;
-    overflow: hidden; /* 아코디언 내용이 넘치면 스크롤 숨김 */
+    overflow: hidden; /* 아코디언 내용이 넘치면 초기엔 숨김 */
     transition: max-height 0.3s ease-out, padding 0.3s ease-out;
 }
 
 .accordion-content.show {
-    max-height: 900px; /* CASVE 모델 사례 내용 전체가 보이도록 아주 넉넉하게 설정 */
+    max-height: 1000px; /* ** CASVE 모델 사례의 모든 내용이 보이도록 매우 큰 값으로 설정 ** */
     padding: 15px 20px;
-    overflow-y: auto; /* 아코디언 내용 자체에 스크롤 필요시 활성화 */
+    overflow-y: auto; /* ** 아코디언 내용 자체에 스크롤이 필요하면 활성화 ** */
 }
 
 .accordion-content p {
@@ -424,7 +426,7 @@ body {
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     max-height: 0; /* 초기 높이 0 */
-    overflow: hidden; /* 내용이 넘치면 숨김 */
+    overflow: hidden; /* 내용이 넘치면 초기엔 숨김 */
     transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.4s ease-out;
     opacity: 0;
     margin-top: 0; /* 버튼에 딱 붙도록 마진 제거 */
@@ -432,11 +434,11 @@ body {
 }
 
 .occupations-list.show {
-    max-height: 1200px; /* 이전보다 훨씬 더 큰 값으로 설정하여 내용이 모두 보이도록 */
+    max-height: 1500px; /* ** 모든 직업군 내용이 보이도록 매우 큰 값으로 설정 ** */
     padding: 20px;
     opacity: 1;
     margin-top: 15px; /* 펼쳐질 때 상단 마진 추가 (조금 늘림) */
-    overflow-y: auto; /* 직업군 목록 자체에 스크롤 필요시 활성화 */
+    overflow-y: auto; /* ** 직업군 목록 자체에 스크롤이 필요하면 활성화 ** */
 }
 
 .occupations-list p {
@@ -497,7 +499,8 @@ body {
     .white-box-content {
         padding: 20px;
         width: 100%;
-        max-height: calc(100% - 150px); /* 모바일에서는 헤더/버튼 공간을 다르게 계산 (더 넉넉하게) */
+        /* 모바일에서는 헤더/버튼 공간을 다르게 계산 (더 넉넉하게) */
+        max-height: calc(100vh - 180px); /* 모바일 환경에서도 헤더, 푸터, 패딩을 고려 */
     }
 
     .two-column-layout {
@@ -526,7 +529,8 @@ body {
     .casve-item p {
         margin-left: 0;
     }
+    /* 모바일에서도 아코디언과 직업군 목록의 max-height를 충분히 확보 */
     .accordion-content.show, .occupations-list.show {
-        max-height: 1200px; /* 모바일에서도 충분히 보이도록 */
+        max-height: 1500px; /* 모바일에서도 충분히 보이도록 */
     }
 }
