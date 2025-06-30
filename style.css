@@ -108,29 +108,24 @@ body {
     align-items: center;
     text-align: center;
     box-sizing: border-box;
-    min-height: 0; /* flex item이 내용에 따라 과도하게 커지는 것을 방지하여 스크롤 가능하게 함 */
+    min-height: 0; /* flex item이 내용에 따라 과도하게 커지는 것을 방지 */
 }
 
+/* ** white-box-content는 이제 스크롤이 필요 없을 가능성이 높으므로 max-height를 제거하거나 매우 큰 값으로 유지 ** */
+/* 그러나 콘텐츠가 너무 길 경우를 대비하여 여전히 overflow-y: auto;를 유지하는 것이 안전합니다. */
 .white-box-content {
     background-color: rgba(255, 255, 255, 0.85);
     border-radius: 10px;
     padding: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    /* ** 스크롤을 위한 가장 확실한 방법: max-height를 매우 크게 설정 ** */
-    /* 부모 .page-content의 높이에 유연하게 반응하면서 스크롤을 유도합니다. */
-    max-height: 10000px; /* ** 매우 큰 값으로 설정하여 실제 높이에 따라 스크롤이 생성되도록 유도 (수정 없음) ** */
-    overflow-y: auto; /* ** 내용이 넘치면 스크롤바가 확실히 나타나도록 설정 (수정 없음) ** */
+    max-height: 10000px; /* 큰 값으로 유지하여 스크롤이 필요하면 나오도록 함 */
+    overflow-y: auto; /* 내용이 넘치면 스크롤바 나오도록 */
     text-align: left;
     width: 90%; /* 내부 콘텐츠 너비 */
-    flex-shrink: 1; /* 필요시 줄어들 수 있도록 허용 */
+    flex-shrink: 1;
     box-sizing: border-box;
-    /* 만약 max-height: 10000px;로도 스크롤이 안 생긴다면,
-     * 여기 `white-box-content`에 `height: 100%;`를 추가해보거나
-     * `.page-content`에 `align-items: stretch;`를 추가해볼 수도 있습니다.
-     * 그러나 일반적으로 `flex-grow: 1`과 `min-height: 0` 조합이 더 유연합니다.
-     */
+    margin-bottom: 20px; /* 각 white-box-content 간의 간격 */
 }
-
 
 .scrollable {
     overflow-y: auto;
@@ -208,47 +203,38 @@ body {
     background-color: #6ab870;
 }
 
-/* Page 3 Specific Styles (진로문제해결 CASVE 모델) - "소통" 글자 정렬 문제 해결 */
-.casve-item {
+/* ** (수정) CASVE 모델 단계별 설명 - 이제는 단순화된 박스 ** */
+.casve-step-box { /* 새로운 클래스 이름 */
     background-color: rgba(240, 255, 240, 0.9);
     border-left: 5px solid #6ab870;
-    padding: 15px 20px;
-    margin-bottom: 15px; /* 각 항목 간의 여백 유지 */
+    padding: 20px 25px; /* 내부 패딩 증가 */
+    margin-bottom: 20px; /* 각 박스 간의 여백 */
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    display: flex; /* Flexbox를 사용하여 제목과 내용을 나란히 정렬 */
-    align-items: center; /* ** 중앙 정렬로 변경 (수정) ** */
-    text-align: left;
-    flex-wrap: nowrap; /* ** 줄바꿈 없음으로 변경 (수정) ** */
-    /* ** min-height를 설정하여 각 박스의 최소 높이 확보 (수정) ** */
-    min-height: 60px; /* 제목과 설명이 한 줄에 들어올 때 최소 높이 */
+    width: 90%; /* white-box-content와 동일한 너비 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    box-sizing: border-box;
 }
 
-.casve-item h3 {
+.casve-step-box h3 {
     color: #2e8132;
     font-size: 1.4em;
     margin-top: 0;
-    margin-bottom: 0; /* ** 마진 0으로 변경하여 겹침 방지 (수정) ** */
-    flex-shrink: 0;
-    width: 180px; /* 제목 영역 너비 유지 */
-    text-align: right;
-    padding-right: 15px;
-    box-sizing: border-box;
-    line-height: 1.2; /* ** 줄 간격 조정 ** */
+    margin-bottom: 10px; /* 제목과 내용 사이 간격 */
+    text-align: center; /* 제목 중앙 정렬 */
 }
 
-.casve-item p {
+.casve-step-box p {
     font-size: 1.1em;
-    line-height: 1.4;
+    line-height: 1.5;
     color: #555;
-    margin-left: 0;
-    flex-grow: 1; /* 남은 공간을 차지하도록 설정 */
-    min-width: 200px; /* 너무 줄어들지 않도록 최소 너비 설정 */
-    margin-top: 0; /* ** 마진 0으로 변경하여 겹침 방지 (수정) ** */
-    margin-bottom: 0; /* ** 마진 0으로 변경하여 겹침 방지 (수정) ** */
+    margin-bottom: 0;
+    text-align: center; /* 내용 중앙 정렬 */
 }
+
 
 /* Page 3 Specific Styles (Info Blocks - ul, li) */
+/* 이 부분은 CASVE 모델 페이지에 안 쓰일테니, 다른 페이지에 ul,li 디자인이 필요하다면 유지 */
 .info-block ul {
     list-style: none;
     padding: 0;
@@ -273,58 +259,12 @@ body {
     top: 0;
 }
 
-/* Page 5 Specific Styles (Accordion) */
-.accordion {
-    width: 100%;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden; /* 아코디언 내용이 튀어나오지 않도록 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
+/* ** (삭제 또는 단순화) 아코디언 관련 CSS 제거 ** */
+/* 이제 아코디언을 사용하지 않으므로 관련 CSS는 주석 처리하거나 제거합니다. */
+/* .accordion, .accordion-header, .accordion-content 등은 이제 사용되지 않습니다. */
+/* 만약 다른 페이지에서 아코디언을 여전히 사용한다면 이 부분은 그대로 두어야 합니다. */
+/* 여기서는 "CASVE 모델 사례 3가지" 페이지에서 아코디언을 제거할 것이므로 관련 CSS를 제거합니다. */
 
-.accordion-header {
-    background-color: #def2e0;
-    color: #333;
-    cursor: pointer;
-    padding: 15px 20px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 1.3em;
-    transition: background-color 0.3s ease;
-    font-family: 'SejongGeulggot', sans-serif;
-    font-weight: bold;
-}
-
-.accordion-header:hover {
-    background-color: #c9e6cb;
-}
-
-.accordion-content {
-    padding: 0 20px;
-    background-color: white;
-    max-height: 0;
-    overflow: hidden; /* 아코디언 내용이 넘치면 초기엔 숨김 */
-    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-}
-
-.accordion-content.show {
-    max-height: 1500px; /* ** CASVE 모델 사례의 모든 내용이 보이도록 매우 큰 값으로 설정 (유지) ** */
-    padding: 15px 20px;
-    overflow-y: auto; /* ** 아코디언 내용 자체에 스크롤이 필요하면 활성화 (유지) ** */
-}
-
-.accordion-content p {
-    margin-bottom: 10px;
-    line-height: 1.4;
-    color: #555;
-}
-
-.accordion-content strong {
-    color: #6ab870;
-}
 
 /* Page 7 Specific Styles (Two Column Layout) */
 .two-column-layout {
@@ -391,8 +331,8 @@ body {
 
 /* Page 9 Specific Styles (Toggle Occupations) */
 .decision-type-occupations {
-    width: 100%; /* 부모 요소의 너비를 100%로 설정 */
-    margin-bottom: 15px; /* 각 직업군 토글 사이 간격 */
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 .toggle-occupations-button {
@@ -405,7 +345,7 @@ body {
     cursor: pointer;
     width: 100%;
     text-align: left;
-    margin-bottom: 10px; /* 버튼과 펼쳐질 내용 사이의 간격 */
+    margin-bottom: 10px;
     transition: background-color 0.3s ease, transform 0.2s ease;
     font-family: 'SejongGeulggot', sans-serif;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -422,20 +362,20 @@ body {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    max-height: 0; /* 초기 높이 0 */
-    overflow: hidden; /* 내용이 넘치면 초기엔 숨김 */
+    max-height: 0;
+    overflow: hidden;
     transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.4s ease-out;
     opacity: 0;
-    margin-top: 0; /* 버튼에 딱 붙도록 마진 제거 */
-    margin-bottom: 20px; /* 목록이 펼쳐졌을 때 다음 버튼과의 간격 확보 */
+    margin-top: 0;
+    margin-bottom: 20px;
 }
 
 .occupations-list.show {
-    max-height: 2000px; /* ** 모든 직업군 내용이 보이도록 엄청나게 큰 값으로 설정 (유지) ** */
+    max-height: 2000px;
     padding: 20px;
     opacity: 1;
-    margin-top: 15px; /* 펼쳐질 때 상단 마진 추가 (조금 늘림) */
-    overflow-y: auto; /* ** 직업군 목록 자체에 스크롤이 필요하면 활성화 (유지) ** */
+    margin-top: 15px;
+    overflow-y: auto;
 }
 
 .occupations-list p {
@@ -512,21 +452,9 @@ body {
         font-size: 2em;
     }
 
-    .casve-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .casve-item h3 {
-        width: auto;
-        text-align: left;
-        padding-right: 0;
-        margin-bottom: 5px;
-    }
-    .casve-item p {
-        margin-left: 0;
-    }
-    /* 모바일에서도 아코디언과 직업군 목록의 max-height를 충분히 확보 */
-    .accordion-content.show, .occupations-list.show {
-        max-height: 2000px; /* 모바일에서도 충분히 보이도록 */
+    /* ** (수정) CASVE 모델 단계별 설명 및 사례 박스 모바일 조정 ** */
+    .casve-step-box {
+        padding: 15px 20px;
+        width: 100%;
     }
 }
